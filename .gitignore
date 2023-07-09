@@ -1,2 +1,4 @@
 #ignore node modules
 node_modules
+#ignore .gitignore that reactapp automatically creates
+.gitignore
