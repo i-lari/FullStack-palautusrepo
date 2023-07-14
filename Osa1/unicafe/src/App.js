@@ -20,7 +20,14 @@ const Part = (props) => {
   )
 }
 
-const Results = (props) => {
+const Statistics = (props) => {
+  if (props.parts[0].count==0 && props.parts[1].count==0 && props.parts[2].count == 0 ) {
+    return(
+      <div>
+        <p>no feedback given</p>
+      </div>
+    )
+  }
   return (
   <div>
   <Part name={props.parts[0].name} count={props.parts[0].count}/>
@@ -46,7 +53,7 @@ const App = () => {
   const addNeutral = () => setNeutral(neutral + 1)
   const addBad = () => setBad(bad + 1)
 
-  const results = {
+  const statistics = {
     parts: [
       {
         name: 'good',
@@ -89,7 +96,7 @@ const App = () => {
       text="bad"
       />
       <header>statistics</header>
-      <Results parts={results.parts} />
+      <Statistics parts={statistics.parts} />
     </div>
   )
 }
