@@ -9,34 +9,30 @@ const Button = (props) => {
 }
 
 
-const Part = (props) => {
-  console.log(props)
+const StatisticLine = (props) => {
+//  console.log(props)
   return (
-  <div>
-  <p>
-    {props.name} {props.count} {props.unit}
-  </p>
-  </div>
+    <div>
+      <p>
+        {props.name} {props.value} {props.unit}
+      </p>
+    </div>
   )
 }
 
 const Statistics = (props) => {
-  if (props.parts[0].count==0 && props.parts[1].count==0 && props.parts[2].count == 0 ) {
-    return(
+  if (props.StatisticLines[0].value == 0 && props.StatisticLines[1].value == 0 && props.StatisticLines[2].value == 0) {
+    return (
       <div>
         <p>no feedback given</p>
       </div>
     )
   }
+  const lis = props.StatisticLines.map(a => <li key={a.name}> <StatisticLine name={a.name} value={a.value} unit={a.unit}/> </li>)
   return (
-  <div>
-  <Part name={props.parts[0].name} count={props.parts[0].count}/>
-  <Part name={props.parts[1].name} count={props.parts[1].count}/>
-  <Part name={props.parts[2].name} count={props.parts[2].count}/>
-  <Part name={props.parts[3].name} count={props.parts[3].count}/>
-  <Part name={props.parts[4].name} count={props.parts[4].count}/>
-  <Part name={props.parts[5].name} count={props.parts[5].count} unit={props.parts[5].unit}/>
-  </div>
+    <div>
+      <ul>{lis}</ul>
+    </div>
   )
 }
 
@@ -45,39 +41,39 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-  const all = good + neutral +bad
+  const all = good + neutral + bad
   const average = (good - bad) / all
-  const positive = (good / all)*100
+  const positive = (good / all) * 100
 
   const addGood = () => setGood(good + 1)
   const addNeutral = () => setNeutral(neutral + 1)
   const addBad = () => setBad(bad + 1)
 
   const statistics = {
-    parts: [
+    StatisticLines: [
       {
         name: 'good',
-        count: good
+        value: good
       },
       {
         name: 'neutral',
-        count: neutral
+        value: neutral
       },
       {
         name: 'bad',
-        count: bad
+        value: bad
       },
       {
         name: 'all',
-        count: all
+        value: all
       },
       {
         name: 'average',
-        count: average
+        value: average
       },
       {
         name: 'positive',
-        count: positive,
+        value: positive,
         unit: '%'
       }
     ]
@@ -86,17 +82,17 @@ const App = () => {
   return (
     <div>
       <header>give feedback</header>
-      <Button handleClick = {addGood}
-      text="good"
+      <Button handleClick={addGood}
+        text="good"
       />
-      <Button handleClick = {addNeutral}
-      text="neutral"
+      <Button handleClick={addNeutral}
+        text="neutral"
       />
-      <Button handleClick = {addBad}
-      text="bad"
+      <Button handleClick={addBad}
+        text="bad"
       />
       <header>statistics</header>
-      <Statistics parts={statistics.parts} />
+      <Statistics StatisticLines={statistics.StatisticLines} />
     </div>
   )
 }
