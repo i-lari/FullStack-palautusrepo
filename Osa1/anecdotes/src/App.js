@@ -12,7 +12,7 @@ const Anecdote = (props) => {
   return (
     <div>
       <p>{props.text}</p>
-      <p>"has {props.votes} votes</p>
+      <p>has {props.votes} votes</p>
     </div>
   )
 }
@@ -28,31 +28,41 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.',
     'The only way to go fast, is to go well.'
   ]
-  const randInt = (min,max) => Math.floor(Math.random() * (max - min + 1)) + min;
+  const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
   const [selected, setSelected] = useState(0)
+  const [most, setMost] = useState(0)
   const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
 
   const newSelected = () => {
-    setSelected(randInt(0,anecdotes.length-1)) 
+    setSelected(randInt(0, anecdotes.length - 1))
   }
-
-  const vote = (x) => {
+  
+  const vote = () => {
     const copy = [...votes]
     copy[selected] += 1
     setVotes(copy)
-    }
-
+    setMost(copy.indexOf(Math.max(...copy)))
+  }
+  
   return (
     <div>
+      <h1>
+        Anecdote of the day
+      </h1>
       <Anecdote text={anecdotes[selected]}
-      votes={votes[selected]} />
+        votes={votes[selected]} />
       <Button handleClick={vote}
         text="vote"
       />
       <Button handleClick={newSelected}
         text="next anecdote"
       />
+      <h1>
+        Anecdote with most votes
+      </h1>
+      <Anecdote text={anecdotes[most]}
+      votes={votes[most]} />
     </div>
   )
 }
