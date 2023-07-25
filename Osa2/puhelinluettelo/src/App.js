@@ -4,16 +4,15 @@ import personService from './services/persons'
 const Person = ({ name, number, remove }) => {
   return (
     <div>
-      {name} {number} 
+      {name} {number}
       <button onClick={remove}>remove</button>
     </div>
   )
 }
 
-const Persons = ({ persons, filter,remove}) => {
-
+const Persons = ({ persons, filter, remove }) => {
   const filteredPersons = persons.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()))
-  const list = filteredPersons.map(a => <Person key={a.name} name={a.name} number={a.number} remove={()=>remove(a.id)} />)
+  const list = filteredPersons.map(a => <Person key={a.name} name={a.name} number={a.number} remove={() => remove(a.id)} />)
   return (
     <div>{list}</div>
   )
@@ -48,7 +47,7 @@ const App = () => {
   useEffect(() => {
     personService
       .getAll()
-        .then(initialPersons => {
+      .then(initialPersons => {
         setPersons(initialPersons)
       })
   }, [])
@@ -65,23 +64,24 @@ const App = () => {
 
       personService
         .create(numberObject)
-          .then(returnedObject=> {
-            setPersons(persons.concat(returnedObject))
-            setNewName('')
-            setNewNumber('')
-          })
+        .then(returnedObject => {
+          setPersons(persons.concat(returnedObject))
+          setNewName('')
+          setNewNumber('')
+        })
     }
   }
   const removeNumber = (id) => {
-    personService
-      .remove(id)
+    if (window.confirm('Delete ' + persons.filter(a => a.id == id)[0].name + '?')) {
+      personService
+        .remove(id)
         .then(() => {
           const newPersons = persons.filter(a => a.id != id)
           setPersons(newPersons)
-        })  
+        })
+    }
   }
-  
-  
+
   const handleNewName = (event) => {
     setNewName(event.target.value)
   }
@@ -92,13 +92,7 @@ const App = () => {
   const handleFilter = (event) => {
     setNewFilter(event.target.value)
   }
-/* 
-      <div>
-      {persons.filter(a => a.name.toLowerCase().includes(newFilter.toLowerCase()))
-      .map(a => <Person key={a.id} name={a.name} number={a.number} remove={()=>removeNumber(a.id)} />)
-      }
-      </div>
- */
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -112,8 +106,7 @@ const App = () => {
         handleNumber={handleNewNumber}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={newFilter} remove={removeNumber}/>
-      
+      <Persons persons={persons} filter={newFilter} remove={removeNumber} />
     </div>
   )
 
