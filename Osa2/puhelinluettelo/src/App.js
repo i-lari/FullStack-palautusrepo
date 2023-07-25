@@ -1,22 +1,24 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons'
-import axios from 'axios'
 
-const Person = ({ name, number }) => {
+const Person = ({ name, number, remove }) => {
   return (
     <div>
-      <p>{name} {number}</p>
+      {name} {number} 
+      <button onClick={remove}>remove</button>
     </div>
   )
 }
 
-const Persons = ({ persons, filter }) => {
+const Persons = ({ persons, filter,remove}) => {
+
   const filteredPersons = persons.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()))
-  const list = filteredPersons.map(a => <Person key={a.name} name={a.name} number={a.number} />)
+  const list = filteredPersons.map(a => <Person key={a.name} name={a.name} number={a.number} remove={()=>remove(a.id)} />)
   return (
     <div>{list}</div>
   )
 }
+
 
 const Filter = ({ filter, handler }) => {
   return (
@@ -70,7 +72,16 @@ const App = () => {
           })
     }
   }
-
+  const removeNumber = (id) => {
+    personService
+      .remove(id)
+        .then(() => {
+          const newPersons = persons.filter(a => a.id != id)
+          setPersons(newPersons)
+        })  
+  }
+  
+  
   const handleNewName = (event) => {
     setNewName(event.target.value)
   }
@@ -81,7 +92,13 @@ const App = () => {
   const handleFilter = (event) => {
     setNewFilter(event.target.value)
   }
-
+/* 
+      <div>
+      {persons.filter(a => a.name.toLowerCase().includes(newFilter.toLowerCase()))
+      .map(a => <Person key={a.id} name={a.name} number={a.number} remove={()=>removeNumber(a.id)} />)
+      }
+      </div>
+ */
   return (
     <div>
       <h2>Phonebook</h2>
@@ -95,7 +112,8 @@ const App = () => {
         handleNumber={handleNewNumber}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={newFilter} />
+      <Persons persons={persons} filter={newFilter} remove={removeNumber}/>
+      
     </div>
   )
 
