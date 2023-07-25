@@ -38,13 +38,13 @@ const PersonForm = ({ submit, name, number, handleName, handleNumber }) => {
   )
 }
 
-const Notification = ({ message }) => {
+const Notification = ({ message,className }) => {
   if (message === null) {
     return null
   }
 
   return (
-    <div className="notification">
+    <div className={className}>
       {message}
     </div>
   )
@@ -56,6 +56,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
   const [notification, setNotification] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   //fetch data from server using effect hook
   useEffect(() => {
@@ -83,6 +84,13 @@ const App = () => {
           setTimeout(()=> {
             setNotification(null)
           },5000)
+          })         
+          .catch(error => {
+            setErrorMessage('Information of '+changedPerson.name+' was already deleted from the server')
+            setTimeout(()=> {
+            setErrorMessage(null)
+          },5000)
+            setPersons(persons.filter(n => n.id !== person.id))
           })
       }
     } else {
@@ -118,6 +126,13 @@ const App = () => {
             setNotification(null)
           },5000)
         })
+        .catch(error => {
+          setErrorMessage('Information of '+ persons.find(a => a.id == id).name+' was already deleted from the server')
+          setTimeout(()=> {
+          setErrorMessage(null)
+        },5000)
+          setPersons(persons.filter(n => n.id !== id))
+        })
     }
   }
 
@@ -135,7 +150,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification}/>
+      <Notification message={notification} className='successMessage'/>
+      <Notification message={errorMessage} className='errorMessage'/>
       <Filter filter={newFilter} handler={handleFilter} />
       <h2>Add new contact</h2>
       <PersonForm
