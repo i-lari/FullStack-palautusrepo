@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import personService from './services/persons'
 import axios from 'axios'
 
 const Person = ({ name, number }) => {
@@ -42,11 +43,11 @@ const App = () => {
   const [newFilter, setNewFilter] = useState('')
 
   //fetch data from server using effect hook
-  useEffect(() => { 
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+  useEffect(() => {
+    personService
+      .getAll()
+        .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -59,13 +60,14 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      axios
-      .post('http://localhost:3001/persons', numberObject)
-      .then(response => {
-        setPersons(persons.concat(response.data))
-        setNewName('')
-        setNewNumber('')
-      })
+
+      personService
+        .create(numberObject)
+          .then(returnedObject=> {
+            setPersons(persons.concat(returnedObject))
+            setNewName('')
+            setNewNumber('')
+          })
     }
   }
 

@@ -29,6 +29,11 @@
       "name": "foo bar",
       "number": "1234",
       "id": 6
+    },
+    {
+      "name": "Otto Seppälä",
+      "number": "41234915-15231235951",
+      "id": 7
     }
   ]
 }
