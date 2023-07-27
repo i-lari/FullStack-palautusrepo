@@ -23,23 +23,15 @@ const Country = ({ country }) => {
   } else return null
 }
 
-const Countries = ({ countries, filterWord, country, changeCountry }) => {
+const Countries = ({ countries, country }) => {
   if (!countries) { return null } else {
-    const filteredCountries = countries.filter(a => a.toLowerCase().includes(filterWord.toLowerCase()))
-    if (filteredCountries.length == 1 && (country === null || filteredCountries[0] != country.name.common)) {
-      axios
-        .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${filteredCountries[0]}`)
-        .then(response =>
-          changeCountry(response.data)
-        )
-    }
-    if (filteredCountries.length == 1) {
+    if (countries.length == 1) {
       return (
         <Country country={country} />
       )
 
-    } else if (filteredCountries.length <= 10) {
-      const list = filteredCountries.map(a => <p key={a}>{a}</p>)
+    } else if (countries.length <= 10) {
+      const list = countries.map(a =><div  key={a}> <p>{a}</p> <button onClick={() => console.log('lmao')}>show</button> </div>)
       return (
         <div>{list}</div>
       )
@@ -71,10 +63,22 @@ function App() {
       })
   }, [])
 
+  const countriesToShow = countries ? countries
+  .filter(a => a.toLowerCase().includes(filterWord.toLowerCase())) : []
+
+
+  if (countriesToShow[0]!=null && (countriesToShow.length == 1 && (
+    (showCountry == null)||countriesToShow[0]!=showCountry.name.common))) {
+    axios
+      .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${countriesToShow[0]}`)
+      .then(response =>
+        setShowCountry(response.data)
+      )
+  } 
   return (
     <div>
       <Filter filterWord={filterWord} handler={handleFilter} />
-      <Countries countries={countries}
+      <Countries countries={countriesToShow}
         filterWord={filterWord}
         country={showCountry}
         changeCountry={changeCountry} />
