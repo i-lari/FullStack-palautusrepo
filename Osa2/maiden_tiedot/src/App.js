@@ -23,15 +23,14 @@ const Country = ({ country }) => {
   } else return null
 }
 
-const Countries = ({ countries, country }) => {
+const Countries = ({ countries, country}) => {
   if (!countries) { return null } else {
     if (countries.length == 1) {
       return (
         <Country country={country} />
       )
-
     } else if (countries.length <= 10) {
-      const list = countries.map(a =><div  key={a}> <p>{a}</p> <button onClick={() => console.log('lmao')}>show</button> </div>)
+      const list = countries.map(a => <div key={a}> <p>{a}</p> <button onClick={() => console.log('show' + a)}>show</button> </div>)
       return (
         <div>{list}</div>
       )
@@ -49,11 +48,6 @@ function App() {
     event.preventDefault()
     setFilterWord(event.target.value)
   }
-  const changeCountry = (newCountry) => {
-    if (showCountry === null || showCountry.name.common !== newCountry.name.common) {
-      setShowCountry(newCountry)
-    }
-  }
 
   useEffect(() => {
     axios
@@ -64,24 +58,25 @@ function App() {
   }, [])
 
   const countriesToShow = countries ? countries
-  .filter(a => a.toLowerCase().includes(filterWord.toLowerCase())) : []
+    .filter(a => a.toLowerCase().includes(filterWord.toLowerCase())) : []
 
 
-  if (countriesToShow[0]!=null && (countriesToShow.length == 1 && (
-    (showCountry == null)||countriesToShow[0]!=showCountry.name.common))) {
+  if (countriesToShow[0] != null && (countriesToShow.length == 1 && (
+    (!showCountry) || countriesToShow[0] != showCountry.name.common))) {
     axios
       .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${countriesToShow[0]}`)
       .then(response =>
         setShowCountry(response.data)
       )
-  } 
+  }
+
   return (
     <div>
       <Filter filterWord={filterWord} handler={handleFilter} />
       <Countries countries={countriesToShow}
         filterWord={filterWord}
         country={showCountry}
-        changeCountry={changeCountry} />
+      />
     </div>
   );
 }
