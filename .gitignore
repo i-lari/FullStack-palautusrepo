@@ -2,3 +2,5 @@
 node_modules
 #ignore .gitignore that reactapp automatically creates
 .gitignore
+#ignore mongodb password
+.env
