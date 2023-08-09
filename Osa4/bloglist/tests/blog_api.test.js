@@ -53,7 +53,7 @@ test('id is defined', async () => {
 test('POST adds blog', async () => {
     const blogsFirst = await api.get('/api/blogs')
     expect(blogsFirst.body).toHaveLength(initialBlogs.length)
-    
+
     const newBlog = {
         title: "pokemonni",
         author: "raa",
@@ -68,6 +68,28 @@ test('POST adds blog', async () => {
         .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(initialBlogs.length + 1)
+
+})
+
+test('likes is 0 when not specified', async () => {
+    const newBlog = {
+        title: "pokemonni",
+        author: "raa",
+        url: "https://fi.wikipedia.org/wiki/Beluga"
+    }
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+
+    expect(response.body[response.body.length-1].likes).toEqual(0)
+    expect(response.body[response.body.length-1].title).toEqual('pokemonni')
+    expect(response.body[response.body.length-1].url).toEqual("https://fi.wikipedia.org/wiki/Beluga")
+    expect(response.body[response.body.length-1].author).toEqual("raa")
     expect(response.body).toHaveLength(initialBlogs.length + 1)
 
 })
