@@ -42,3 +42,10 @@ test('a specific blog is within the returned blogs', async () => {
         'pekka orponen'
     )
 })
+
+test('id is defined', async () => {
+    const response = await api.get('/api/blogs')
+    for (let i = 0; i < response.body.length; i++) {
+        expect(response.body[i].id).toBeDefined()
+      }
+})
