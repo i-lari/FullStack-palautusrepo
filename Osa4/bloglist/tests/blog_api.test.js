@@ -49,3 +49,25 @@ test('id is defined', async () => {
         expect(response.body[i].id).toBeDefined()
       }
 })
+
+test('POST adds blog', async () => {
+    const blogsFirst = await api.get('/api/blogs')
+    expect(blogsFirst.body).toHaveLength(initialBlogs.length)
+    
+    const newBlog = {
+        title: "pokemonni",
+        author: "raa",
+        url: "https://fi.wikipedia.org/wiki/Beluga",
+        likes: 21474
+    }
+    
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(initialBlogs.length + 1)
+
+})
