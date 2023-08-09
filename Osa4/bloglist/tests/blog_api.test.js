@@ -112,3 +112,13 @@ test('return 400 bad request when title or url missing', async () => {
         .send(newLog)
         .expect(400)
 })
+
+test('delete blog by id', async () => {
+    const blogsAtStart = await api.get('/api/blogs')
+    await api
+    .delete(`/api/blogs/${blogsAtStart.body[0].id}`)
+    .expect(204)
+
+    const blogsAfterDelete = await api.get('/api/blogs')
+    expect(blogsAfterDelete.body.length).toEqual(blogsAtStart.body.length-1)
+})
