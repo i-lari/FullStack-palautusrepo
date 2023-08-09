@@ -47,7 +47,7 @@ test('id is defined', async () => {
     const response = await api.get('/api/blogs')
     for (let i = 0; i < response.body.length; i++) {
         expect(response.body[i].id).toBeDefined()
-      }
+    }
 })
 
 test('POST adds blog', async () => {
@@ -60,7 +60,7 @@ test('POST adds blog', async () => {
         url: "https://fi.wikipedia.org/wiki/Beluga",
         likes: 21474
     }
-    
+
     await api
         .post('/api/blogs')
         .send(newBlog)
@@ -86,10 +86,29 @@ test('likes is 0 when not specified', async () => {
 
     const response = await api.get('/api/blogs')
 
-    expect(response.body[response.body.length-1].likes).toEqual(0)
-    expect(response.body[response.body.length-1].title).toEqual('pokemonni')
-    expect(response.body[response.body.length-1].url).toEqual("https://fi.wikipedia.org/wiki/Beluga")
-    expect(response.body[response.body.length-1].author).toEqual("raa")
+    expect(response.body[response.body.length - 1].likes).toEqual(0)
+    expect(response.body[response.body.length - 1].title).toEqual('pokemonni')
+    expect(response.body[response.body.length - 1].url).toEqual("https://fi.wikipedia.org/wiki/Beluga")
+    expect(response.body[response.body.length - 1].author).toEqual("raa")
     expect(response.body).toHaveLength(initialBlogs.length + 1)
+})
 
+test('return 400 bad request when title or url missing', async () => {
+    const newBlog = {
+        author: "raa",
+        url: "https://fi.wikipedia.org/wiki/Beluga"
+    }
+    const newLog = {
+        title: "pokemonni",
+        author: "raa",
+    }
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+
+    await api
+        .post('/api/blogs')
+        .send(newLog)
+        .expect(400)
 })
