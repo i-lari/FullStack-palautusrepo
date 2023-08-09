@@ -122,3 +122,23 @@ test('delete blog by id', async () => {
     const blogsAfterDelete = await api.get('/api/blogs')
     expect(blogsAfterDelete.body.length).toEqual(blogsAtStart.body.length-1)
 })
+
+test('update blog by id', async () => {
+    const blogsAtStart = await api.get('/api/blogs')
+    const firstBlog = blogsAtStart.body[0]
+    const updatedBlog = {
+        title: firstBlog.title,
+        author: firstBlog.author,
+        url: firstBlog.url,
+        likes: firstBlog.likes+1
+    }
+
+    await api
+    .put(`/api/blogs/${blogsAtStart.body[0].id}`)
+    .send(updatedBlog)
+
+    const blogsAfterUpdate = await api.get('/api/blogs')
+
+    expect(blogsAfterUpdate.body[0].likes).toEqual(blogsAtStart.body[0].likes+1)
+    expect(blogsAfterUpdate.body.length).toEqual(blogsAtStart.body.length)
+})
