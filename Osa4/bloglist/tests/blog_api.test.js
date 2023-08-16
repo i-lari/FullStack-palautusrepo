@@ -3,6 +3,8 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const bcrypt = require('bcrypt')
+const User = require('../models/user')
 
 const initialBlogs = [
     {
@@ -19,12 +21,18 @@ const initialBlogs = [
     },
 ]
 
+
 beforeEach(async () => {
+    await User.deleteMany({})
+    const passwordHash = await bcrypt.hash('pannusumu', 10)
+    const user = new User({ username: 'pertti keinonen', passwordHash })
+    await user.save()
     await Blog.deleteMany({})
     let BlogObject = new Blog(initialBlogs[0])
     await BlogObject.save()
     BlogObject = new Blog(initialBlogs[1])
     await BlogObject.save()
+    
 })
 
 test('all blogs are returned', async () => {
@@ -53,12 +61,15 @@ test('id is defined', async () => {
 test('POST adds blog', async () => {
     const blogsFirst = await api.get('/api/blogs')
     expect(blogsFirst.body).toHaveLength(initialBlogs.length)
+    const pertti = await api.get('/api/users')[0]
+    console.log(pertti)
 
     const newBlog = {
         title: "pokemonni",
         author: "raa",
         url: "https://fi.wikipedia.org/wiki/Beluga",
-        likes: 21474
+        likes: 21474,
+        user: pertti.id
     }
 
     await api
