@@ -5,6 +5,7 @@ const api = supertest(app)
 const Blog = require('../models/blog')
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
+const helper = require('./test_helper')
 
 const initialBlogs = [
     {
@@ -61,15 +62,15 @@ test('id is defined', async () => {
 test('POST adds blog', async () => {
     const blogsFirst = await api.get('/api/blogs')
     expect(blogsFirst.body).toHaveLength(initialBlogs.length)
-    const pertti = await api.get('/api/users')[0]
-    console.log(pertti)
+    const users = await helper.usersInDb()
+
 
     const newBlog = {
         title: "pokemonni",
         author: "raa",
         url: "https://fi.wikipedia.org/wiki/Beluga",
         likes: 21474,
-        user: pertti.id
+        user: users[0].id
     }
 
     await api
@@ -84,10 +85,12 @@ test('POST adds blog', async () => {
 })
 
 test('likes is 0 when not specified', async () => {
+    const users = await helper.usersInDb()
     const newBlog = {
         title: "pokemonni",
         author: "raa",
-        url: "https://fi.wikipedia.org/wiki/Beluga"
+        url: "https://fi.wikipedia.org/wiki/Beluga",
+        user: users[0].id
     }
     await api
         .post('/api/blogs')
@@ -105,13 +108,16 @@ test('likes is 0 when not specified', async () => {
 })
 
 test('return 400 bad request when title or url missing', async () => {
+    const users = await helper.usersInDb()
     const newBlog = {
         author: "raa",
-        url: "https://fi.wikipedia.org/wiki/Beluga"
+        url: "https://fi.wikipedia.org/wiki/Beluga",
+        user: users[0].id
     }
     const newLog = {
         title: "pokemonni",
         author: "raa",
+        user: users[0].id
     }
     await api
         .post('/api/blogs')
