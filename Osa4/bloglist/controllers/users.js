@@ -16,6 +16,10 @@ usersRouter.post('/', async (request, response) => {
   const duplicate = await User.findOne({username})
   if(duplicate) {
     response.status(400).json({error: 'expected `username` to be unique'})
+  } else if(!username || username.length<3) {
+    response.status(400).json({error: 'username has to be at least three(3) characters long'})
+  } else if(!password || password.length < 3) {  
+  response.status(400).json({error: 'password has to be at least three(3) characters long'})
   } else {
 
   const saltRounds = 10
