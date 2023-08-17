@@ -22,6 +22,10 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState('')
   const [notification, setNotification] = useState('')
   const [user, setUser] = useState(null)
+  const [blogTitle, setBlogTitle] = useState('')
+  const [blogAuthor, setBlogAuthor] = useState('')
+  const [blogUrl, setBlogUrl] = useState('')
+
 
 
   useEffect(() => {
@@ -87,7 +91,29 @@ const App = () => {
       }, 5000)
     }
   }
-
+  const handleNewBlog = async (event) => {
+    event.preventDefault()
+    try {
+    const newBlog = {
+      title: blogTitle,
+      author: blogAuthor,
+      url: blogUrl
+    }
+    blogService.create(newBlog)
+    setBlogAuthor('')
+    setBlogTitle('')
+    setBlogUrl('')
+    setNotification('blog creation succesful')
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+  } catch (exception) {
+    setErrorMessage(`what is going on help ${exception}`)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
+  }
   const loginForm = () => (
     <div>
       <h2>Login</h2>
@@ -114,7 +140,7 @@ const App = () => {
       </form>
     </div>
   )
-  const blogForm = () => (
+  const blogList = () => (
     <div>
       <h2>blogs</h2>
       <p>{user.username} logged in
@@ -122,6 +148,24 @@ const App = () => {
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
+    </div>
+  )
+
+  const blogForm = () => (
+    <div>
+      <h2>create new</h2>
+      <form onSubmit={handleNewBlog}>
+        <div> title
+          <input value={blogTitle} onChange={({target})=>setBlogTitle(target.value)}></input>
+        </div>
+        <div> author
+          <input value={blogAuthor} onChange={({target})=>setBlogAuthor(target.value)}></input>
+        </div>
+        <div> Url
+          <input value={blogUrl} onChange={({target})=>setBlogUrl(target.value)}></input>
+        </div>
+        <button type="submit">create</button>
+      </form>
     </div>
   )
 const notifications = () => (
@@ -134,6 +178,7 @@ const notifications = () => (
     <div>
       {notifications()}
       {!user && loginForm()}
+      {user && blogList()}
       {user && blogForm()}
 
     </div>
