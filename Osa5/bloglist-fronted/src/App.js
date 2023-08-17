@@ -103,7 +103,7 @@ const App = () => {
     setBlogAuthor('')
     setBlogTitle('')
     setBlogUrl('')
-    setNotification('blog creation succesful')
+    setNotification(`created ${newBlog.title} by ${newBlog.author}`)
       setTimeout(() => {
         setNotification(null)
       }, 5000)
