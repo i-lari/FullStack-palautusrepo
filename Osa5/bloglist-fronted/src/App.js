@@ -121,8 +121,6 @@ const App = () => {
   const blogList = () => (
     <div>
       <h2>blogs</h2>
-      <p>{user.username} logged in
-      <button onClick={handleLogout}> logout </button></p>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
@@ -147,6 +145,8 @@ const notifications = () => (
        handleSubmit={handleLogin}
        />
        </Togglable>}
+       {user && <p>{user.username} logged in
+      <button onClick={handleLogout}> logout </button></p>}
       {user && blogList()}
      {user && <Togglable buttonLabel='create new'>
         <BlogForm
