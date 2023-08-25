@@ -32,7 +32,8 @@ const App = () => {
 
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
+   blogService.getAll()
+   .then(blogs =>
       setBlogs(blogs)
     )
   }, [])
@@ -100,9 +101,14 @@ const App = () => {
     const newBlog = {
       title: blogTitle,
       author: blogAuthor,
-      url: blogUrl
+      url: blogUrl,
+      user: user
     }
-    blogService.create(newBlog)
+    await blogService.create(newBlog)
+    blogService.getAll()
+    .then(blogs =>
+       setBlogs(blogs)
+     )
     setBlogAuthor('')
     setBlogTitle('')
     setBlogUrl('')

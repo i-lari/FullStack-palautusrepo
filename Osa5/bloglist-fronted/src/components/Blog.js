@@ -17,7 +17,6 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
   const user = blog.user.username || ''
-  console.log(user)
 
   return (
     <div style={blogStyle}>
