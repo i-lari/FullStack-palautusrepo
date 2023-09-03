@@ -106,6 +106,9 @@ const App = () => {
     setBlogAuthor('')
     setBlogTitle('')
     setBlogUrl('')
+    blogService.getAll().then(blogs =>
+      setBlogs(blogs)
+    )
     setNotification(`created ${newBlog.title} by ${newBlog.author}`)
       setTimeout(() => {
         setNotification(null)
