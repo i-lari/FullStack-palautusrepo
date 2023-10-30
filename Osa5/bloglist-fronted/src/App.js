@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
@@ -137,7 +137,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} handleLike={handleLike} showDelete={user.username === blog.user.username}/>
+        <Blog key={blog.id} blog={blog} handleLike={handleLike} showDelete={user.username === blog.user.username}/>
       )}
     </div>
   )

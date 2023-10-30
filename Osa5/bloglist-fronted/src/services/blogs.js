@@ -23,9 +23,9 @@ const create = async newObject => {
 
 const like = async blogObject => {
   const config = {
-    headers: {authorization: token},
+    headers: { authorization: token },
   }
-  const newBlog = {...blogObject}
+  const newBlog = { ...blogObject }
   newBlog.likes = blogObject.likes + 1
 
   const response = await axios.put(`${baseUrl}/${blogObject.id}`,newBlog,config)
@@ -34,11 +34,11 @@ const like = async blogObject => {
 
 const remove = async blogObject => {
   const config = {
-    headers: {authorization: token},
+    headers: { authorization: token },
   }
   const response = await axios.delete(`${baseUrl}/${blogObject.id}`,config)
   return response.data
 }
-
-// eslint-disable-next-line import/no-anonymous-default-export
+//import/no-anonymous-default-export
+// eslint-disable-next-line
 export default { getAll,setToken, create, like, remove }
