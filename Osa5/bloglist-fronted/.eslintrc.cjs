@@ -17,7 +17,7 @@ module.exports = {
   plugins: ['react-refresh', 'jest'],
   rules: {
     "indent": [
-        "error",
+        "warn",
         2  
     ],
     "linebreak-style": [

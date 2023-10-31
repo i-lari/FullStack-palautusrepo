@@ -1,5 +1,4 @@
 import axios from 'axios'
-//const axios = require('axios')
 const baseUrl = '/api/blogs'
 
 const getAll = () => {
