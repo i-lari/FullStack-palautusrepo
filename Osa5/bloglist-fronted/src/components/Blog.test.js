@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
 test('renders content', () => {
-  //  const mockHandleLike = jest.fn()
+
   const blog = {
     title: 'this is a test',
     author: 'testAuthor',
@@ -67,5 +67,27 @@ test('renders url and likes after "view" -button has been pressed', async () => 
 
   expect(element2).toHaveStyle('display: block')
   expect(element).toHaveStyle('display: block')
+
+})
+
+test('renders url and likes after "view" -button has been pressed', async () => {
+
+  const blog = {
+    title: 'this is a test',
+    author: 'testAuthor',
+    url: 'testUrl',
+    user: 'testUser',
+    likes: '2'
+  }
+  render(<Blog blog={blog}/>)
+  const user = userEvent.setup()
+ // const viewButton = screen.getByText('view')
+  const button = screen.getByText('like')
+  expect(button).toBeDefined()
+
+  await user.click(button)
+  expect(mockHandler.mock.calls).toHaveLength(1)
+  await user.click(button)
+  expect(mockHandler.mock.calls).toHaveLength(2)
 
 })
