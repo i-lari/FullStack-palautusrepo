@@ -21,7 +21,7 @@ module.exports = {
         2  
     ],
     "linebreak-style": [
-        "error",
+        "warn",
         "windows"
     ],
     "quotes": [
@@ -33,7 +33,7 @@ module.exports = {
         "never"
     ],
     "eqeqeq": "error",
-    "no-trailing-spaces": "error",
+    "no-trailing-spaces": "warn",
     "object-curly-spacing": [
         "error", "always"
     ],

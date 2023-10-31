@@ -70,7 +70,7 @@ test('renders url and likes after "view" -button has been pressed', async () => 
 
 })
 
-test('renders url and likes after "view" -button has been pressed', async () => {
+test('call correct even handler for "like"-button twice', async () => {
 
   const blog = {
     title: 'this is a test',
@@ -79,9 +79,10 @@ test('renders url and likes after "view" -button has been pressed', async () => 
     user: 'testUser',
     likes: '2'
   }
-  render(<Blog blog={blog}/>)
+  const mockHandler = jest.fn()
+  render(<Blog blog={blog} handleLike={mockHandler}/>)
   const user = userEvent.setup()
- // const viewButton = screen.getByText('view')
+  // const viewButton = screen.getByText('view')
   const button = screen.getByText('like')
   expect(button).toBeDefined()
 

@@ -3,7 +3,7 @@ import blogService from './../services/blogs'
 
 const Blog = ({ blog, handleLike, showDelete }) => {
   const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
+  const likes= blog.likes
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
 
@@ -11,19 +11,9 @@ const Blog = ({ blog, handleLike, showDelete }) => {
     setVisible(!visible)
   }
 
-  const likeBlog = () => {
-    const ref = { ...blog }
-    ref.likes=likes
-    blogService.like(ref).then(response =>
-      setLikes(response.likes)
-    )
-    handleLike()
-  }
-
   const deleteBlog = () => {
     if(window.confirm(`Delete ${blog.title} by ${blog.author} ?`)) {
       blogService.remove({ ...blog })
-      handleLike()
     }
   }
 
@@ -46,7 +36,7 @@ const Blog = ({ blog, handleLike, showDelete }) => {
         </div>
         <div style={showWhenVisible}>
           <p>{blog.url} </p>
-          <p>{likes}</p><button onClick={likeBlog}>like</button>
+          <p>{likes}</p><button onClick={handleLike}>like</button>
           <p>{user}</p>
           <button onClick={toggleVisibility}>hide</button>
           {showDelete&& <button onClick={deleteBlog}>Delete</button>}
