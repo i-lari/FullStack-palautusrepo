@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from './../services/blogs'
 
-const Blog = ({ blog, handleLike,showDelete }) => {
+const Blog = ({ blog, handleLike, showDelete }) => {
   const [visible, setVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
   const hideWhenVisible = { display: visible ? 'none' : '' }
