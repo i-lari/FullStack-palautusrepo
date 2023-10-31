@@ -182,5 +182,4 @@ const App = () => {
     </div>
   )
 }
-//172{user && blogList()}
 export default App
