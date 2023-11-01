@@ -20,7 +20,8 @@
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint .",
-    "lintfix": "npx eslint . --fix"
+    "lintfix": "npx eslint . --fix",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -46,7 +47,9 @@
     "@babel/preset-env": "^7.23.2",
     "@testing-library/user-event": "^14.5.1",
     "babel-jest": "^29.7.0",
+    "cypress": "^13.4.0",
     "eslint": "^8.52.0",
+    "eslint-plugin-cypress": "^2.15.1",
     "eslint-plugin-jest": "^27.6.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-refresh": "^0.4.4"
