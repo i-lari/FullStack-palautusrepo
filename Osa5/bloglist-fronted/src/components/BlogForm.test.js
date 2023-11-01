@@ -9,7 +9,7 @@ test('<BlogForm /> calls back with correct info', async () => {
   const user = userEvent.setup()
   const createBlog = jest.fn()
 
-  render(<BlogForm handleSubmit={createBlog}/>)
+  render(<BlogForm createBlog={createBlog}/>)
 
   const inputs = screen.getAllByRole('textbox')
   const button = screen.getByText('create')
@@ -17,10 +17,8 @@ test('<BlogForm /> calls back with correct info', async () => {
   await user.type(inputs[0], 'formtest')
   await user.click(button)
 
-  console.log(createBlog.mock.calls)
-
   expect(createBlog.mock.calls).toHaveLength(1)
-  expect(createBlog.mock.calls[0][0].content).toBe('formtest')
+  expect(createBlog.mock.calls[0][0].title).toBe('formtest')
 
 
 })

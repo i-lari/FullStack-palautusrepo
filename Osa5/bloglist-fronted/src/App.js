@@ -25,9 +25,6 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState('')
   const [notification, setNotification] = useState('')
   const [user, setUser] = useState(null)
-  const [blogTitle, setBlogTitle] = useState('')
-  const [blogAuthor, setBlogAuthor] = useState('')
-  const [blogUrl, setBlogUrl] = useState('')
 
 
   const sortBlogs = () => {
@@ -104,23 +101,20 @@ const App = () => {
       }, 5000)
     }
   }
-  const handleNewBlog = async (event) => {
-    event.preventDefault()
+  const addBlog = async (blog) => {
     try {
       const newBlog = {
-        title: blogTitle,
-        author: blogAuthor,
-        url: blogUrl,
+        title: blog.title || '',
+        author: blog.author || '',
+        url: blog.url || '',
         user: user
       }
+      console.log(newBlog)
       await blogService.create(newBlog)
       blogService.getAll()
         .then(blogs =>
           setBlogs(blogs)
         )
-      setBlogAuthor('')
-      setBlogTitle('')
-      setBlogUrl('')
       blogService.getAll().then(blogs =>
         setBlogs(blogs)
       )
@@ -128,7 +122,7 @@ const App = () => {
       setTimeout(() => {
         setNotification(null)
       }, 5000)
-      handleLike()
+      sortBlogs()
     } catch (exception) {
       setErrorMessage(`what is going on help ${exception}`)
       setTimeout(() => {
@@ -141,7 +135,9 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)} showDelete={user.username === blog.user.username}/>
+        <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)} showDelete={user.username === blog.user.username}
+          sortBlogs={sortBlogs}
+        />
       )}
     </div>
   )
@@ -169,13 +165,7 @@ const App = () => {
       {user && blogList()}
       {user && <Togglable buttonLabel='create new'>
         <BlogForm
-          Title={blogTitle}
-          Author={blogAuthor}
-          Url={blogUrl}
-          handleAuthorChange={({ target }) => setBlogAuthor(target.value)}
-          handleTitleChange={({ target }) => setBlogTitle(target.value)}
-          handleUrlChange={({ target }) => setBlogUrl(target.value)}
-          handleSubmit={handleNewBlog}
+          createBlog={addBlog}
         />
       </Togglable>}
 
