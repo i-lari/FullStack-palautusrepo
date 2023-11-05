@@ -52,12 +52,25 @@ describe('Blog app', function() {
       cy.get('#author').type('kirjailiha')
       cy.get('#url').type('uuäräl')
       cy.get('#create-button').click()
+      
       cy.get('#viewblog-button').click()
       cy.get('#likes').contains('0')
       cy.get('#like-button').click()
       cy.get('#likes').contains('1')
-
-
     })
+    it('A blog can be deleted', function() {
+      cy.contains('new blog').click()
+      cy.get('#title').type('titteli')
+      cy.get('#author').type('kirjailiha')
+      cy.get('#url').type('uuäräl')
+      cy.get('#create-button').click()
+
+      cy.get('#viewblog-button').click()
+      cy.get('#delete-button').click()
+      cy.contains('titteli').should('not.exist')
+      cy.contains('kirjailiha').should('not.exist')
+      cy.contains('uuäräl').should('not.exist')
+    })
+
   })
 })
