@@ -1,7 +1,7 @@
 describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
-    cy.request('POST', 'http://localhost:3003/api/users',{username:'tester', password:'secret'})
+    cy.request('POST', 'http://localhost:3003/api/users',{ username:'tester', password:'secret' })
     cy.visit('http://localhost:3000')
   })
 
@@ -15,7 +15,7 @@ describe('Blog app', function() {
       cy.get('#username').type('tester')
       cy.get('#password').type('secret')
       cy.contains('log in').click()
-   //   cy.contains('login succesfull')
+      //   cy.contains('login succesfull')
       cy.contains('blogs')
     })
 
@@ -24,7 +24,7 @@ describe('Blog app', function() {
       cy.get('#username').type('tester')
       cy.get('#password').type('wrong')
       cy.contains('log in').click()
-   //   cy.contains('wrong credentials')
+      //   cy.contains('wrong credentials')
       cy.contains('log in')
     })
   })
@@ -52,7 +52,7 @@ describe('Blog app', function() {
       cy.get('#author').type('kirjailiha')
       cy.get('#url').type('uuäräl')
       cy.get('#create-button').click()
-      
+
       cy.get('#viewblog-button').click()
       cy.get('#likes').contains('0')
       cy.get('#like-button').click()
@@ -70,6 +70,21 @@ describe('Blog app', function() {
       cy.contains('titteli').should('not.exist')
       cy.contains('kirjailiha').should('not.exist')
       cy.contains('uuäräl').should('not.exist')
+    })
+    it('only blog creator can see delete-button', function() {
+      cy.contains('new blog').click()
+      cy.get('#title').type('titteli')
+      cy.get('#author').type('kirjailiha')
+      cy.get('#url').type('uuäräl')
+      cy.get('#create-button').click()
+      cy.request('POST', 'http://localhost:3003/api/users',{ username:'tester2', password:'secret2' })
+      cy.get('#logout-button').click()
+      cy.contains('login').click()
+      cy.get('#username').type('tester2')
+      cy.get('#password').type('secret2')
+      cy.get('#login-button').click()
+      cy.get('#viewblog-button').click()
+      cy.contains('#delete-button').should('not.exist')
     })
 
   })
