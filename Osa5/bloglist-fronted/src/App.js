@@ -109,7 +109,6 @@ const App = () => {
         url: blog.url || '',
         user: user
       }
-      console.log(newBlog)
       await blogService.create(newBlog)
       blogService.getAll()
         .then(blogs =>
@@ -133,7 +132,7 @@ const App = () => {
 
   const blogList = () =>  {
     return(
-      <div>
+      <div id='bloglist'>
         <h2>blogs</h2>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)} showDelete={user.username === blog.user.username}

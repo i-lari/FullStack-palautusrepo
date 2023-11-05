@@ -28,7 +28,7 @@ const Blog = ({ blog, handleLike, showDelete, sortBlogs }) => {
   const user = blog.user.username || ''
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       <div>
         <h3>{blog.title}</h3>
         <p>{blog.author}</p>
