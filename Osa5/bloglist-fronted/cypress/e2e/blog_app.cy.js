@@ -46,5 +46,18 @@ describe('Blog app', function() {
       cy.contains('kirjailiha')
       cy.contains('uuäräl')
     })
+    it('A blog can be liked', function() {
+      cy.contains('new blog').click()
+      cy.get('#title').type('titteli')
+      cy.get('#author').type('kirjailiha')
+      cy.get('#url').type('uuäräl')
+      cy.get('#create-button').click()
+      cy.get('#viewblog-button').click()
+      cy.get('#likes').contains('0')
+      cy.get('#like-button').click()
+      cy.get('#likes').contains('1')
+
+
+    })
   })
 })
