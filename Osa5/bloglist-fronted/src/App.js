@@ -165,7 +165,7 @@ const App = () => {
       {user && <p>{user.username} logged in
         <button onClick={handleLogout}> logout </button></p>}
       {user && blogList()}
-      {user && <Togglable buttonLabel='create new'>
+      {user && <Togglable buttonLabel='new blog'>
         <BlogForm
           createBlog={addBlog}
         />
