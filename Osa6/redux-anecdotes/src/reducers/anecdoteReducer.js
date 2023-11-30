@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { useDispatch } from 'react-redux'
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -18,7 +19,6 @@ const asObject = (anecdote) => {
     votes: 0
   }
 }
-
 const initialState = anecdotesAtStart.map(asObject)
 
 const anecdotesSlice = createSlice({
